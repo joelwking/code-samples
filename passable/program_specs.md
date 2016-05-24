@@ -2,11 +2,11 @@
 
 ## Inputs
 Inputs to the program will be made using command-line option flags. The program must take the appropriate run-time actions as follows:
-
+```
   -h, --help   show this help message and exit
   -i INPUT     specify clear text password from command line
   -f FILENAME  specify a CSV file to read and process 
-
+```
 If no options are specified, print the usage overview and exit.
 
 ### CSV file format
