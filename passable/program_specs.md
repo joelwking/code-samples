@@ -1,4 +1,5 @@
 # Program Specifications
+This program checks the vunerability of a password to dictionary attacks.
 
 ## Inputs
 Inputs to the program will be made using command-line option flags. The program must take the appropriate run-time actions as follows:
@@ -33,7 +34,7 @@ Test the following conditions:
 * Execution with an unrecognized argument
 * Execution specifying -h and --help
 * Specify the -f option with no filename, and an invalid filename
-* Specify the -i option with no 
+* Specify the -i option with no clear text password and with a password
 * Execute using a valid -i and -f arguments
 * CSV file with blank lines
 
