@@ -1,0 +1,68 @@
+#!/usr/bin/ansible-playbook
+---
+#
+#      Modify the virtual switch interface(s) for a VM cloned from template
+#
+#      Copyright (c) 2016 World Wide Technology, Inc.
+#      All rights reserved.
+#
+#      author: Joel W. King,  World Wide Technology
+#
+#
+- hosts: mediaWIKI
+  connection: local
+  user: administrator
+
+  vars:
+    guest_name: "xStart{{ansible_date_time.epoch}}"
+    vcenter: "nexussb-vc-02.wwtatc.local"
+    uname: "administrator@vsphere.local"
+
+  tasks:
+  - name: Decrypt the password file
+    include_vars: "./passwords.yml"
+
+  - name: Deploy a guest from a template
+    vsphere_guest:
+       vcenter_hostname: "{{vcenter}}"
+       validate_certs: false
+       username: "{{uname}}"
+       password: "{{password}}"
+       guest: "{{guest_name}}"
+       from_template: yes
+       template_src: "X-Docker-demo-template"
+       power_on_after_clone: no                  # Clone but leave powered down
+       cluster: "Compute-Cluster"
+       resource_pool: "/Resources"
+       esxi:
+        datacenter: "ACI Demo DC"
+        hostname: "10.255.139.161"
+
+  - name: Change virtual switch
+    vsphere_guest:
+       vcenter_hostname: "{{vcenter}}"
+       validate_certs: false
+       username: "{{uname}}"
+       password: "{{password}}"
+       guest: "{{guest_name}}"
+       state: "reconfigured"
+       esxi:
+         datacenter: "ACI Demo DC"
+         hostname: "10.255.139.161"
+       vm_nic:                                   # Modify the NIC from the template
+        nic1:
+          type: "E1000"
+          network: "VLAN 68"
+          network_type: "standard"
+
+  - name: Power up virtual machine
+    vsphere_guest:
+       vcenter_hostname: "{{vcenter}}"
+       validate_certs: false
+       username: "{{uname}}"
+       password: "{{password}}"
+       guest: "{{guest_name}}"
+       state: "powered_on"                       # Power up the VM
+       esxi:
+         datacenter: "ACI Demo DC"
+         hostname: "10.255.139.161"
