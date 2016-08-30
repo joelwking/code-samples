@@ -1,0 +1,26 @@
+#!/usr/bin/ansible-playbook
+---
+#
+#      get_invy.yml  Illustrates using a dynamic inventory Python module      
+#
+#      Usage:  nsible-playbook -i get_inventory.py get_invy.yml
+#
+#      Copyright (c) 2016 World Wide Technology, Inc.
+#      All rights reserved.
+#
+#      author: Joel W. King, World Wide Technology
+#
+#      Reference: http://www.jeffgeerling.com/blog/creating-custom-dynamic-inventories-ansible
+#
+- name: test dynamic inventory 
+  hosts:  F5_CREATE                # In code, this is a constant GROUP = "F5_CREATE" 
+  connection: local
+  gather_facts: no 
+
+  vars:
+    foo: bar
+
+  tasks:
+    - name: Debug 
+      debug: msg="{{inventory_hostname}} {{F5VE_B_IP}} {{F5VE_B_LICENSE}}" 
+
