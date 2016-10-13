@@ -6,7 +6,7 @@
 #
 #      author: Joel W. King,  World Wide Technology
 #
-- name: Testing  icontrol F5 module to automate WideIP
+- name: Sample playbook demonstrating module development and variables
   hosts: localhost
   connection: local
   gather_facts: yes 
