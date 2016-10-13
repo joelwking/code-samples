@@ -1,0 +1,30 @@
+#!/usr/bin/ansible-playbook 
+---
+#
+#      Copyright (c) 2016 World Wide Technology, Inc.
+#      All rights reserved.
+#
+#      author: Joel W. King,  World Wide Technology
+#
+- name: Testing  icontrol F5 module to automate WideIP
+  hosts: localhost
+  connection: local
+  gather_facts: yes 
+  vars:
+   google:
+     url: "https://www.google.com/news"
+
+  tasks:
+  - name: Test parameters with registered variable 
+    test_params:
+      url: "{{google.url}}"
+    register: result
+
+  - name: debug
+    debug: var=result
+ 
+  - name: debug referencing specific variables
+    debug: msg="{{result.msg}} {{result.status_code}}"
+
+  - name: Display Ansible Facts
+    debug: msg="{{ansible_hostname}} {{inventory_hostname}}"
