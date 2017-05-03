@@ -1,0 +1,56 @@
+#!/usr/bin/ansible-playbook
+---
+#
+#      SimpleHTTPclient.yml.yml
+#
+#      Copyright (c) 2017 World Wide Technology, Inc.
+#      All rights reserved.
+#
+#      author: Joel W. King,  World Wide Technology
+#
+#      Steps:
+#       
+#      On a linux machine (rocket), create a directory, we will use 'api'
+#
+#      $ mkdir api
+#      $ cd api
+#
+#      Create file 'foo' with JSON data
+#
+#      $ echo '{"name":"JOEL KING","email":"joel.king@wwt.com","id":"729131","networks":[],"tags":["WEB", "BAR"],"orgAccess":"full"}' >foo
+#      Your file should look like this
+#      kingjoe@rocket:~/api$ cat foo
+#      {"name":"JOEL KING","email":"joel.king@wwt.com","id":"729131","networks":[],"tags":["WEB", "BAR"],"orgAccess":"full"}
+# 
+#
+#      Start your web server
+#      ~/api$ python -m SimpleHTTPServer 8000
+#
+#      Now run this playbook example
+#
+- hosts: localhost
+  connection: local
+
+  tasks:
+
+  - name: simulate API call for variables
+    uri:
+      url: "http://rocket.sandbox.wwtatc.local:8000/foo"
+      method: GET
+      return_content: yes
+    register: foo
+
+  - debug: msg="{{foo.content}}"
+
+  # Put your data into a variable called 'bar'
+
+  - set_fact: bar="{{foo.content | from_json }}"
+
+  # Now reference the elements of the JSON data
+
+  - debug: msg="{{bar.email}} {{bar.name}}"
+
+  - name: process the list called tags
+    debug: msg="{{item}}"
+    with_items: "{{bar.tags}}"
+
