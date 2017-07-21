@@ -1,5 +1,5 @@
 # Program Specifications
-This program checks the vunerability of a password to dictionary attacks.
+This program checks the vulnerability of a password to dictionary attacks.
 
 ## Inputs
 Inputs to the program will be made using command-line option flags. The program must take the appropriate run-time actions as follows:
