@@ -3,18 +3,36 @@
 
     pw_chckr.py  - Checks the password strength using a REST API call to www.passable.io
 
-    Copyright (c) 2016 World Wide Technology, Inc.
+    Copyright (c) 2017 World Wide Technology, Inc.
     All rights reserved.
-    Revision history:
-     23 May  2016  |  1.0 - initial release
+
+    author: "joel.king@wwt.com (@joelwking)"
+    written: 23 May 2016
+    description:
+        This program checks the vulnerability of a password to dictionary attacks.
+        The user can specify clear text password from command line or provide a CSV
+        file, which contains two columns, a clear text password and URL. Output specifies
+        if the password is considered safe.
+
+    notes: none
+    requirements: none
+    examples:
+        $ python pw_chckr.py -i abcdefghij
+        Password is Not safe
 
 """
+# ~/.config/flake8
+# [flake8]
+# max-line-length = 120
 
-import requests
+# Remote debugging with Pycharm
+# import pydevd
+# pydevd.settrace('192.168.56.1', stdoutToServer=True, stderrToServer=True)
+
 import csv
 import hashlib
 import argparse
-import requests.packages.urllib3
+import requests
 requests.packages.urllib3.disable_warnings()
 
 HEADERS = {"Content-Type": "application/json"}
@@ -25,8 +43,8 @@ STATUS = {0: "OK", 1: "Not safe", None: "not checked, connection error"}
 def read_csv(input_file):
     """ Read the CSV file specified and check the strength of each row in
         the file, ignoring blank rows. The CSV file must have at least two
-        columns with headers URL and Password. Print out the URL and 
-        password status for the rows. Password Corral 
+        columns with headers URL and Password. Print out the URL and
+        password status for the rows. Password Corral
         http://www.cygnusproductions.com/freeware/pc.asp
         can be used to export a clear text CSV file, but it will not include
         column headers.
@@ -59,7 +77,7 @@ def hash_password(clear_text):
 
 
 def password_status(indicator):
-    """Reply with the status message of the password checked."
+    """ Reply with the status message of the password checked."
     """
     try:
         return STATUS[indicator]
@@ -87,7 +105,7 @@ def call_passable(URL):
 def main():
     """ Parse arguments and call the CSV or interactive logic, print help if no arguments provided.
     """
-    parser = argparse.ArgumentParser(description='Checks the password strength using a REST API call to www.passable.io')
+    parser = argparse.ArgumentParser(description='Checks the password strength with a REST API call to www.passable.io')
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-i', dest="input", help='specify clear text password from command line')
     group.add_argument('-f', dest="filename", help='specify a Password Coral file to read')
