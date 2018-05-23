@@ -100,7 +100,7 @@ def main():
 
     # Clean up
     for number in range(0, END):
-        item = PREFIX + number
+        item = PREFIX + str(number)
         contract(apic=cntrl, contract=item, tenant=tenant, desired_state='absent')
 
 
